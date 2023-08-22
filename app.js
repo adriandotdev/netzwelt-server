@@ -40,7 +40,14 @@ app.post('/account/login', async (req, res) => {
 
 app.get('/home/index', async (req, res) => {
 
+    try {
+        const response = await axios.get('https://netzwelt-devtest.azurewebsites.net/Territories/All');
 
+        return res.json(response.data);
+    }
+    catch (err) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
 });
 
 app.listen(3001, () => {
