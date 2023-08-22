@@ -4,6 +4,8 @@ module.exports = function VerificationMiddleware(req, res, next) {
 
     const token = req.cookies['auth-token'];
 
+    if (token === '') next();
+
     try {
 
         const isValid = jwt.verify(token, process.env.SECRET_KEY);
