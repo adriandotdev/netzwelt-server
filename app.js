@@ -62,6 +62,13 @@ app.get('/home/index', VerificationMiddleware, async (req, res) => {
     }
 });
 
+app.post('/account/logout', (req, res) => {
+
+    res.clearCookie('auth-token');
+
+    res.status(200).json({ message: 'Logged out successfully' })
+});
+
 app.listen(3001, () => {
     console.log("LISTEN TO SERVER: 3001")
 })
