@@ -38,6 +38,11 @@ app.post('/account/login', async (req, res) => {
     }
 });
 
+app.get('/home/index', async (req, res) => {
+
+
+});
+
 app.listen(3001, () => {
     console.log("LISTEN TO SERVER: 3001")
 })
