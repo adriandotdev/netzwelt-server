@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser())
 
+const PORT = process.env.PORT || 3001;
+
 app.post('/account/login', async (req, res) => {
 
     const { username, password } = req.body;
@@ -69,6 +71,6 @@ app.post('/account/logout', (req, res) => {
     res.status(200).json({ message: 'Logged out successfully' })
 });
 
-app.listen(3001, () => {
-    console.log("LISTEN TO SERVER: 3001")
+app.listen(PORT, () => {
+    console.log("LISTEN TO SERVER: " + PORT)
 })
