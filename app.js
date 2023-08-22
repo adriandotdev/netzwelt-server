@@ -4,6 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const app = express();
+const buildHierarchy = require('./helpers/hierarchyBuilder');
 
 require('dotenv').config();
 
@@ -43,7 +44,11 @@ app.get('/home/index', async (req, res) => {
     try {
         const response = await axios.get('https://netzwelt-devtest.azurewebsites.net/Territories/All');
 
-        return res.json(response.data);
+        const data = response.data.data;
+
+        const modifiedData = buildHierarchy(data);
+
+        res.status(200).json(modifiedData)
     }
     catch (err) {
         return res.status(401).json({ message: 'Unauthorized' });
