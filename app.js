@@ -6,9 +6,11 @@ const axios = require('axios');
 const app = express();
 const buildHierarchy = require('./helpers/hierarchyBuilder');
 
+const VerificationMiddleware = require('./middleware/VerificationMiddleware');
+
 require('dotenv').config();
 
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser())
@@ -31,7 +33,7 @@ app.post('/account/login', async (req, res) => {
                 secure: true, // Cookie sent over HTTPS only
             });
 
-            return res.json({ message: 'Succesfully logged in!' });
+            return res.json({ message: 'Succesfully logged in!', token: signedJWT });
         }
     }
     catch (err) {
@@ -39,7 +41,12 @@ app.post('/account/login', async (req, res) => {
     }
 });
 
-app.get('/home/index', async (req, res) => {
+app.post('/api/verify', VerificationMiddleware, (req, res) => {
+
+    res.status(200).json({ message: 'Authorized' });
+});
+
+app.get('/home/index', VerificationMiddleware, async (req, res) => {
 
     try {
         const response = await axios.get('https://netzwelt-devtest.azurewebsites.net/Territories/All');
